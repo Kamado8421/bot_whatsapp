@@ -6,7 +6,7 @@ const {
 
 
 // path da pasta para autenticação de sessão
-const AUTH_CONNECTION_PATH = '../assets/qrcode';
+const AUTH_CONNECTION_PATH = 'assets/qrcode';
 
 
 async function connectBot(){

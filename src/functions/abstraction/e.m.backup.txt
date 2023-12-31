@@ -1,0 +1,58 @@
+const prefix = require('../request_data/get_data');
+
+class MessageAbstract {
+    constructor(senderName, fromMe, args, participant, from, isImage, isGroup, isAdmin, isSticker, isVideo, senderRegisted, reaction, isCommand, command){
+        this.senderName = senderName;
+        this.fromMe = fromMe;
+        this.args = args;
+        this.participant = participant;
+        this.from = from;
+        this.isImage = isImage;
+
+        this.isGroup = isGroup;
+        this.isAdmin = isAdmin;
+        this.isSticker = isSticker;
+        this.isVideo = isVideo;
+        this.senderRegisted = senderRegisted;
+        this.full_msg = null;
+        this.reaction = reaction;
+        this.isCommand = isCommand;
+        this.command = command;
+        this.isBot = this.fromMe;
+    }
+}
+
+async function ExtractMessage(msg){
+    const from = msg.key.remoteJid;
+    const fromMe = msg?.key?.fromMe;
+    const participant = msg?.key?.participant;
+    const pushName = msg?.pushName;
+    const args = msg?.message?.ExtendedargsMessage?.args;
+
+    let isGroup = from.endsWith("@g.us");
+    let isAdmin = false;
+    let isSticker =  msg?.message && msg.message?.stickerMessage ? true : false;
+    let isVideo =  msg?.message && msg.message?.videoMessage ? true : false;
+    let isImage =  msg?.message && msg.message?.imageMessage ? true : false;
+    let reaction = msg?.message?.reactionMessage.text;
+    
+    const words = args.split(" ");
+    const isCommand = words.length > 0 && words[0].startsWith(prefix);
+    const command = isCommand ? words[0].slice(prefix.length) : null;
+
+    let legend;
+
+    if(isVideo){
+        let legendVideo = msg.message?.videoMessage?.caption;
+        legend = legendVideo;
+    } else if(isImage){
+        let legendImage = msg.message?.imageMessage?.caption;
+        legend = legendImage;
+    }
+
+    const message_abstracted = new MessageAbstract(pushName, fromMe, args, participant, from, isImage, isGroup, isAdmin, isSticker, isVideo, true, reaction, isCommand, command);
+
+    return message_abstracted;
+}
+
+module.exports = ExtractMessage;
