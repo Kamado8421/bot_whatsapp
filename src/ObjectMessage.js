@@ -26,7 +26,7 @@ async function ObjectMessage(messageBot, prefix) {
         const MESSAGE = msg_info.full_msg;
         const ARGUMENT = msg_info.args;
 
-        var obj = {
+        let obj = {
             sender: sender,
             senderName: senderName,
             participant: participant,
@@ -56,5 +56,21 @@ async function ObjectMessage(messageBot, prefix) {
     }
 }
 
+async function ObjectInfo(prefix, botName, admin_name, phone_admin, emoji){
+    let obj = {
+        prefix: prefix,
+        botName: botName,
+        admin_name: admin_name,
+        phone_admin: phone_admin,
+        emoji: emoji
+    }
 
-module.exports = ObjectMessage;
+    return obj;
+
+}
+
+
+module.exports = {
+    ObjectMessage,
+    ObjectInfo
+};

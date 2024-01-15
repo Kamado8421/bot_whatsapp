@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 class MessageAbstract {
     constructor(isRegisted, senderName, fromMe, args, participant, from, isImage, isGroup, isAdmin, isSticker, isVideo, reaction, isCommand, command, legend) {
         this.isRegisted = isRegisted;   
@@ -51,7 +53,9 @@ async function ExtractMessage(msg, prefix) {
     const isCommand = (words.length > 0 && words[0].startsWith(prefix)) || (legends.length > 0 && legends[0].startsWith(prefix));
     const command = isCommand ? (words.length > 0 ? words[0].slice(prefix.length) : legends[0].slice(prefix.length)) : null;
 
-    const message_abstracted = new MessageAbstract(true, pushName, fromMe, args, participant, from, isImage, isGroup, isAdmin, isSticker, isVideo, reaction, isCommand, command, legend);
+    let isRegisted = JSON.parse(fs.readFileSync('data/registers/users/users.json', 'utf-8')).some(user => user.id === from);
+
+    const message_abstracted = new MessageAbstract(isRegisted, pushName, fromMe, args, participant, from, isImage, isGroup, isAdmin, isSticker, isVideo, reaction, isCommand, command, legend);
 
     return message_abstracted;
 }

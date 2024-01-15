@@ -1,6 +1,7 @@
 const connectBot = require('./src/connection');
-const ObjectMessage = require("./src/ObjectMessage");
+const { ObjectMessage, ObjectInfo } = require("./src/ObjectMessage");
 const verifyCommand = require('./src/switch_cmd/VerifyCommand');
+const ErrorMessage = require('./src/functions/messages/ErrorMessage');
 const SendMessage = require('./src/functions/messages/SendMessage')
 const config_woner = require('./src/functions/request_data/get_data');
 
@@ -19,10 +20,15 @@ async function start() {
     bot.ev.on('messages.upsert', async (msg) => {
         const messageBot = await msg.messages[0];
 
+        await bot.sendPresenceUpdate('available', messageBot.key.remoteJid); 
+
+        console.log(messageBot)
+
         const message = await ObjectMessage(messageBot, prefix);
-        const wpp = new SendMessage(bot, messageBot);
-        verifyCommand(message, wpp);
-        
+        const info = await ObjectInfo(prefix, botName, admin_name, phone_admin, emoji);
+        const wpp = new SendMessage(bot, messageBot, info);
+        const send_error = new ErrorMessage(wpp, info);
+        verifyCommand(message, wpp, info, send_error);
         
     });
 }

@@ -38,6 +38,7 @@ async function connectBot(){
     
     // salvando sessao
     bot.ev.on('creds.update', saveCreds);
+    
 
     return bot;
 }

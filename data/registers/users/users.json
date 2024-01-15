@@ -1,16 +1,10 @@
 [
     {
-        "name": "Luciano",
-        "score": 0,
-        "premium": false,
-        "level": 1,
-        "superuser": false
-    },
-    {
         "name": "luhdev",
         "score": 1000,
         "premium": false,
         "level": 1,
-        "superuser": true
+        "superuser": true,
+        "id": "559883528062@s.whatsapp.net"
     }
 ]
